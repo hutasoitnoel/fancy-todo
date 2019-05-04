@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- META -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <!-- JQUERY -->
+
+    <!-- LOGIN / REGISTER-->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- LOGIN / REGISTER-->
+
+    <!-- GOOGLE SIGN IN -->
+    <meta name="google-signin-client_id"
+        content="826508344920-rlk8tmovt6rordqourok2jp1h7791em1.apps.googleusercontent.com">
+    <!-- GOOGLE SIGN IN -->
+
+    <!-- META -->
+
+    <!-- Coba remove biar lebih deket -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <!-- Coba remove biar lebih deket -->
+
+    <!-- SCRIPT -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- SCRIPT -->
+
+    <title>My Todo</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a id="myTodos" class="nav-link" href="#">My Todos<span class="sr-only">(current)</span></a>
+                    <br><br>
+                    <a id="addTodo" class="nav-link" href="#">Add Todo<span class="sr-only">(current)</span></a>
+                </li>
+                <li style="position: absolute; right: 20px;">
+                    <a id="googleSignOut" href="#" onclick="signOut();">Sign out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="alert alert-danger" id="wrongInput"></div>
+
+    <div id="addFormContainer" class="container" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Add Todo</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
+            </div>
+            <div class="panel-body">
+                <form id="addForm" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="name" class="col-md-3 control-label">Title</label>
+                        <div class="col-md-9">
+                            <input id="add-name" type="text" class="form-control" name="add-name"
+                                placeholder="Full Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-md-3 control-label">Description</label>
+                        <div class="col-md-9">
+                            <textarea style="height: 200px; width: 300px;" id="add-description" name="add-description"
+                                placeholder="To do description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="due date" class="col-md-3 control-label">Due Date</label>
+                        <div class="col-md-9">
+                            <input id="add-date" type="date" class="form-control" name="add-date" placeholder="Date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button id="add-button" type="submit" class="btn btn-info"><i
+                                    class="icon-hand-right"></i>Add new todo</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="editFormContainer" class="container" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">Edit Todo</div>
+                <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
+            </div>
+            <div class="panel-body">
+                <form id="editForm" class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="name" class="col-md-3 control-label">Title</label>
+                        <div class="col-md-9">
+                            <input id="edit-name" type="text" class="form-control" name="name" placeholder="Full Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Description" class="col-md-3 control-label">Description</label>
+                        <div class="col-md-9">
+                            <textarea style="height: 200px; width: 300px;" id="edit-description" type="description"
+                                class="form-control" name="description" placeholder="description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status" class="col-md-3 control-label">Status</label>
+                        <div class="col-md-9">
+                            <select id="edit-status" name="status">
+                                <option value="Completed">Completed</option>
+                                <option value="Incomplete">Incomplete</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="due date" class="col-md-3 control-label">Due Date</label>
+                        <div class="col-md-9">
+                            <input id="edit-dueDate" type="date" class="form-control" name="dueDate"
+                                placeholder="dueDate">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button id="register-button" type="submit" class="btn btn-info"><i
+                                    class="icon-hand-right"></i>Confirm Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <table class="table table-bordered" id="table">
+            <thead id="thead">
+
+            </thead>
+            <tbody id="tbody">
+
+            </tbody>
+        </table>
+    </div>
+    <div id="loginRegisterForm" class="container">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">Sign In</div>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
+                </div>
+                <div style="padding-top:30px" class="panel-body">
+                    <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    <form id="signInForm" class="form-horizontal" role="form">
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input id="signIn-email" type="email" class="form-control" name="email" value=""
+                                placeholder="Email Address">
+                        </div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                            <input id="signIn-password" type="password" class="form-control" name="password"
+                                placeholder="Password">
+                        </div>
+                        <div style="margin-top:10px" class="form-group">
+                            <div class="col-sm-12 controls">
+                                <button id="signIn-button" type="submit" class="btn btn-success"><i
+                                        class="icon-hand-right"></i>Sign in</button><br>
+                                <h5>Or sign in using:</h5>
+                                <div id="googleSignIn" class="g-signin2" data-onsuccess="onSignIn"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 control">
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                    Don't have an account?
+                                    <a href="#" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                        Register here!
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="signupbox" style="display:none; margin-top:50px"
+            class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <div class="panel-title">Register</div>
+                    <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
+                </div>
+                <div class="panel-body">
+                    <form id="registerForm" class="form-horizontal" role="form">
+                        <div id="signupalert" style="display:none" class="alert alert-danger">
+                            <p>Error:</p>
+                            <span></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="firstname" class="col-md-3 control-label">Full Name</label>
+                            <div class="col-md-9">
+                                <input id="register-name" type="text" class="form-control" name="name"
+                                    placeholder="Full Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-md-3 control-label">Email</label>
+                            <div class="col-md-9">
+                                <input id="register-email" type="email" class="form-control" name="email"
+                                    placeholder="Email Address">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-md-3 control-label">Password</label>
+                            <div class="col-md-9">
+                                <input id="register-password" type="password" class="form-control" name="password"
+                                    placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="register-button" type="submit" class="btn btn-info"><i
+                                        class="icon-hand-right"></i>Sign Up</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12 control">
+                                <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
+                                    Already have an account?
+                                    <a id="signinlink" href="#"
+                                        onclick="$('#signupbox').hide(); $('#loginbox').show()">Sign in here!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GOOGLE SIGN OUT -->
+    <!-- GOOGLE SIGN OUT -->
+
+    <!-- LOCAL SCRIPTS -->
+    <script src="./client.js"></script>
+    <!-- LOCAL SCRIPTS -->
+</body>
+
+</html>
