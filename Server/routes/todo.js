@@ -9,11 +9,10 @@ route.use(Authentication)
 route.post('/', TodoController.create)
 
 // READ
-route.get('/:id', TodoController.findOne)
-route.get('/', TodoController.findMine)
+route.get('/', TodoController.findAll)
 
 // UPDATE
-route.patch('/:id', Authorization, TodoController.update)
+route.put('/:id', Authorization, TodoController.update)
 
 // DELETE
 route.delete('/:id', Authorization, TodoController.delete)

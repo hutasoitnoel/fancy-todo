@@ -87,28 +87,6 @@ class UserController {
                 res.status(500).json(err)
             })
     }
-
-    static findOne(req, res) {
-        User
-            .findOne({ _id: req.params.id })
-            .then(users => {
-                res.status(200).json(users)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
-    }
-
-    static findAll(req, res) {
-        User
-            .find()
-            .then(users => {
-                res.status(200).json(users)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
-    }
 }
 
 module.exports = UserController

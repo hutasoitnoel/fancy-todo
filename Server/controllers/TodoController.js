@@ -43,10 +43,7 @@ class TodoController {
 
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) return console.log(error)
-                        console.log(`message sent`, info.messageId);
                     })
-                } else {
-                    console.log(`dont send email!`);
                 }
                 res.status(201).json(todo)
             })
@@ -55,31 +52,7 @@ class TodoController {
             })
     }
 
-    static findOne(req, res) {
-        Todo
-            .findOne({ _id: ObjectId(req.params.id) })
-            .populate('user')
-            .then(todo => {
-                res.status(200).json(todo)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
-    }
-
     static findAll(req, res) {
-        Todo
-            .find()
-            .populate('user')
-            .then(todos => {
-                res.status(200).json(todos)
-            })
-            .catch(err => {
-                res.status(500).json(err)
-            })
-    }
-
-    static findMine(req, res) {
         Todo
             .find({ user: ObjectId(req.decoded._id) })
             .populate('user')
@@ -92,23 +65,17 @@ class TodoController {
     }
 
     static update(req, res) {
-        console.log(req.body);
-        
         const { name, description, status, dueDate } = req.body
         Todo
             .findOneAndUpdate({ _id: req.params.id }, {
                 name, description, status, dueDate
             }, { new: true })
             .then(updated => {
-                console.log(`berhasil update`);
-                
+                console.log(updated);
+
                 res.status(200).json(updated)
             })
             .catch(err => {
-                console.log('masuk error');
-                console.log(err.message);
-                console.log(err);
-                
                 res.status(500).json(err.message)
             })
     }
@@ -117,6 +84,9 @@ class TodoController {
         Todo
             .findOneAndDelete({ _id: req.params.id })
             .then(deleted => {
+                console.log(deleted);
+                console.log('lala!');
+
                 res.status(200).json(deleted)
             })
             .catch(err => {

@@ -1,4 +1,3 @@
-const User = require('../models/User')
 const Todo = require('../models/Todo')
 
 module.exports = (req, res, next) => {

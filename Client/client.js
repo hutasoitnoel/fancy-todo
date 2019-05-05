@@ -23,6 +23,8 @@ function onSignIn(googleUser) {
     $('#googleSignIn').hide()
     $('#googleSignOut').show()
     $('#loginRegisterForm').hide()
+    $('#myTodos').show()
+    $('#addTodo').show()
 }
 
 // Regular sign in
@@ -118,10 +120,7 @@ function myTodo() {
 
                 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
                 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-                console.log(el.status);
-                console.log(el.status == 'Incomplete');
-                
-                if (el.status == 'Incomplete'){
+                if (el.status == 'Incomplete') {
                     $('#tbody').append(`
                         <tr class="table-danger">
                         <td>${el.name}</td>
@@ -139,7 +138,7 @@ function myTodo() {
                         </td>
                         </tr>
                     `)
-                }else {
+                } else {
                     $('#tbody').append(`
                         <tr class="table-success">
                         <td>${el.name}</td>
@@ -170,16 +169,6 @@ function myTodo() {
 // untuk dipakai pada function editToDo
 var todoToEdit = '';
 function showEditForm(todoId, name, description, status, dueDate) {
-    console.log(todoId);
-    console.log(name);
-    console.log(description);
-    console.log(status);
-    console.log(dueDate);
-    
-    
-    
-    
-    
     $('#edit-name').val(name)
     $('#edit-description').val(description)
     $('#edit-status').val(status)
@@ -225,21 +214,15 @@ function addTodo() {
             myTodo()
         })
         .fail((jqXHR, textStatus) => {
-            console.log(jqXHR);
-            
             $('#notification').text(jqXHR.responseJSON.errors.dueDate.message).show()
         })
 
 }
 
 function editTodo(todoToEdit) {
-    console.log($('#edit-name').val())
-    console.log($('#edit-description').val())
-    console.log($('#edit-status').val())
-    console.log($('#edit-dueDate').val())
     $.ajax({
         url: `http://localhost:3000/todo/${todoToEdit}`,
-        method: "PATCH",
+        method: "PUT",
         headers: {
             token: localStorage.token
         },
@@ -251,13 +234,24 @@ function editTodo(todoToEdit) {
         }
     })
         .done(response => {
-            console.log(`edit berhasil`);
-            
             console.log(response);
-
         })
         .fail((jqXHR, textStatus) => {
             $('#notification').text(jqXHR.responseJSON).show()
+        })
+}
+
+function generateQuote() {
+    $.ajax({
+        url: "http://localhost:3000/quote",
+        method: "GET"
+    })
+        .done(response => {
+            $('#quoteText').text('"' + response.quoteText + '"')
+            $('#quoteAuthor').text('- ' + response.quoteAuthor)
+        })
+        .fail((jqXHR, textStatus) => {
+            console.log(jqXHR.responseJSON);
         })
 }
 
@@ -314,5 +308,8 @@ $(document).ready(() => {
         $('#addFormContainer').show()
         $('#table').hide()
         $('#loginRegisterForm').hide()
+    })
+    $('#generateQuoteButton').on('click', event => {
+        generateQuote()
     })
 })
