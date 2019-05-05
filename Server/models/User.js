@@ -30,10 +30,7 @@ let userSchema = new Schema({
             [{ validator: validEmail, msg: 'Please use a valid email address' },
             { validator: uniqueEmail, msg: "Email address is already taken" }]
     },
-    password: {
-        type: String,
-        required: [true, "Password is required"]
-    }
+    password: String
 })
 
 userSchema.pre('save', function (next) {

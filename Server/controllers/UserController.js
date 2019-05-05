@@ -19,9 +19,10 @@ class UserController {
 
     static signIn(req, res) {
         const { email, password } = req.body
-        User.findOne({
-            email
-        })
+        User
+            .findOne({
+                email
+            })
             .then(user => {
                 if (user) {
                     if (bcryptjs.compareSync(password, user.password)) {
@@ -56,21 +57,21 @@ class UserController {
                 audience: process.env.GOOGLE_CLIENT_ID
             })
             .then(ticket => {
-
                 let payload = ticket.getPayload()
                 let foundUser = User.findOne({ email: payload.email })
-
                 return Promise.all([payload, foundUser])
-
             })
             .then(([payload, foundUser]) => {
                 if (!foundUser) {
                     return User
                         .create({
                             name: payload.name,
-                            email: payload.email
+                            email: payload.email,
+                            password: '123456'
                         })
-                } else return foundUser
+                } else {
+                    return foundUser
+                }
             })
             .then(user => {
                 const myToken = jwt.sign({
@@ -89,13 +90,13 @@ class UserController {
 
     static findOne(req, res) {
         User
-        .findOne({_id: req.params.id})
-        .then(users => {
-            res.status(200).json(users)
-        })
-        .catch(err => {
-            res.status(500).json(err)
-        })
+            .findOne({ _id: req.params.id })
+            .then(users => {
+                res.status(200).json(users)
+            })
+            .catch(err => {
+                res.status(500).json(err)
+            })
     }
 
     static findAll(req, res) {

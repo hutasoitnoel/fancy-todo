@@ -13,9 +13,9 @@
     <!-- JQUERY -->
 
     <!-- LOGIN / REGISTER-->
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
+    <!-- <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
     <!-- LOGIN / REGISTER-->
 
     <!-- GOOGLE SIGN IN -->
@@ -26,8 +26,8 @@
     <!-- META -->
 
     <!-- Coba remove biar lebih deket -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Coba remove biar lebih deket -->
 
     <!-- SCRIPT -->
@@ -38,17 +38,21 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #99EADF !important">
+        <img style="height: 50px; width: 75px; border-radius: 100%"
+            src="https://cdn.dribbble.com/users/1053743/screenshots/3313367/beaver_800_600.gif">
+        <a class="navbar-brand" href="#">Evertodo</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a id="myTodos" class="nav-link" href="#">My Todos<span class="sr-only">(current)</span></a>
-                    <br><br>
+                </li>
+                <li>
                     <a id="addTodo" class="nav-link" href="#">Add Todo<span class="sr-only">(current)</span></a>
                 </li>
                 <li style="position: absolute; right: 20px;">
@@ -57,7 +61,12 @@
             </ul>
         </div>
     </nav>
-    <div class="alert alert-danger" id="wrongInput"></div>
+
+    <div class="alert alert-danger" id="notification"></div>
+
+    <div class="text-center">
+
+    </div>
 
     <div id="addFormContainer" class="container" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
@@ -70,8 +79,8 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Title</label>
                         <div class="col-md-9">
-                            <input id="add-name" type="text" class="form-control" name="add-name"
-                                placeholder="Full Name">
+                            <input id="add-name" type="text" class="form-control" name="add-name" placeholder="Title"
+                                required="true">
                         </div>
                     </div>
                     <div class="form-group">
@@ -86,6 +95,9 @@
                         <div class="col-md-9">
                             <input id="add-date" type="date" class="form-control" name="add-date" placeholder="Date">
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <input id="add-sendEmail" type="checkbox" name="sendEmail" value="yes"> Send to my email
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
@@ -110,7 +122,8 @@
                     <div class="form-group">
                         <label for="name" class="col-md-3 control-label">Title</label>
                         <div class="col-md-9">
-                            <input id="edit-name" type="text" class="form-control" name="name" placeholder="Full Name">
+                            <input id="edit-name" type="text" class="form-control" name="name" placeholder="Title"
+                                required="true">
                         </div>
                     </div>
                     <div class="form-group">

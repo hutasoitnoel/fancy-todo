@@ -6,7 +6,7 @@ const cors = require('cors')
 const routes = require('./routes/routes')
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost:27017/todoApp', { useNewUrlParser: true, useCreateIndex: true })
-
+mongoose.set('useFindAndModify', false);
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cors())

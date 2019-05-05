@@ -13,15 +13,16 @@ function onSignIn(googleUser) {
         }
     })
         .done(response => {
+            console.log(response);
             localStorage.setItem('token', response.token)
         })
         .fail((jqXHR, textStatus) => {
+            $('#notification').text(jqXHR.responseJSON.msg).show();
             console.log(`error google sign in`);
         })
     $('#googleSignIn').hide()
     $('#googleSignOut').show()
     $('#loginRegisterForm').hide()
-
 }
 
 // Regular sign in
@@ -35,16 +36,18 @@ function signIn() {
         }
     })
         .done(response => {
-            $('#wrongInput').hide()
+            $('#notification').hide()
             if (response.token) {
                 localStorage.token = response.token
                 $('#googleSignIn').hide()
                 $('#googleSignOut').show()
                 $('#loginRegisterForm').hide()
+                $('#myTodos').show()
+                $('#addTodo').show()
             }
         })
         .fail((jqXHR, textStatus) => {
-            $('#wrongInput').text(jqXHR.responseJSON.msg).show();
+            $('#notification').text(jqXHR.responseJSON.msg).show();
         })
 
 }
@@ -62,6 +65,9 @@ function register() {
         .done(response => {
             $('#signupbox').hide()
             $('#loginbox').show()
+            $('#notification').removeClass("alert-danger")
+            $('#notification').addClass("alert-success")
+            $('#notification').text(`${response.name} successfully registered! Welcome to Evertodo :)`).show();
         })
         .fail((jqXHR, textStatus) => {
             console.log(`error register`);
@@ -80,7 +86,8 @@ function signOut() {
     $('#thead > tr').remove()
     $('#tbody > tr').remove()
     $('#addFormContainer').hide()
-
+    $('#myTodos').hide()
+    $('#addTodo').hide()
 }
 
 function myTodo() {
@@ -105,29 +112,74 @@ function myTodo() {
             `)
 
             response.forEach((el, i) => {
-                $('#tbody').append(`
-                    <tr>
-                    <td>${el.name}</td>
-                    <td>${el.description}</td>
-                    <td>${el.status}</td>
-                    <td>${el.dueDate}</td>
-                    <td><a href="#" onClick="showEditForm('${el._id}', '${el.name}', '${el.description}', '${el.status}','${el.dueDate}'); $('#table').hide(); $('#editFormContainer').show()";>Edit</a> || 
-                    <a href="#" onclick="deleteTodo('${el._id}')">Delete</a>
-                    </td>
-                    </tr>
-                `)
+                // Kalo user tulis description pakai enter, saat dibaca client akan jadi spasi
+                // kalo didiemin \n jadi error
+                el.description = el.description.split('\n').join(' ');
+
+                const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+                console.log(el.status);
+                console.log(el.status == 'Incomplete');
+                
+                if (el.status == 'Incomplete'){
+                    $('#tbody').append(`
+                        <tr class="table-danger">
+                        <td>${el.name}</td>
+                        <td style="max-width: 14px;overflow: hidden;text-overflow: ellipsis;">${el.description}</td>
+                        <td>${el.status}</td>
+                        <td>${day[new Date(el.dueDate).getMonth()]}, ${new Date(el.dueDate).getDate()} ${month[new Date(el.dueDate).getMonth()]} ${new Date(el.dueDate).getFullYear()}</td>
+                        <td><a 
+                        href="#";
+                        onclick="showEditForm('${el._id}', '${el.name}', '${el.description}', '${el.status}','${el.dueDate}');
+                        $('#table').hide(); 
+                        $('#editFormContainer').show()";>
+                        Edit </a> 
+                        || 
+                        <a href="#" onclick="deleteTodo('${el._id}')"> Delete </a>
+                        </td>
+                        </tr>
+                    `)
+                }else {
+                    $('#tbody').append(`
+                        <tr class="table-success">
+                        <td>${el.name}</td>
+                        <td style="max-width: 14px;overflow: hidden;text-overflow: ellipsis;">${el.description}</td>
+                        <td>${el.status}</td>
+                        <td>${day[new Date(el.dueDate).getMonth()]}, ${new Date(el.dueDate).getDate()} ${month[new Date(el.dueDate).getMonth()]} ${new Date(el.dueDate).getFullYear()}</td>
+                        <td><a 
+                        href="#";
+                        onclick="showEditForm('${el._id}', '${el.name}', '${el.description}', '${el.status}','${el.dueDate}');
+                        $('#table').hide(); 
+                        $('#editFormContainer').show()";>
+                        Edit </a> 
+                        || 
+                        <a href="#" onclick="deleteTodo('${el._id}')"> Delete </a>
+                        </td>
+                        </tr>
+                    `)
+                }
             });
             $('#table').show()
         })
         .fail((jqXHR, textStatus) => {
             console.log(`error get my todo list`);
-            
+
         })
 }
 
 // untuk dipakai pada function editToDo
 var todoToEdit = '';
 function showEditForm(todoId, name, description, status, dueDate) {
+    console.log(todoId);
+    console.log(name);
+    console.log(description);
+    console.log(status);
+    console.log(dueDate);
+    
+    
+    
+    
+    
     $('#edit-name').val(name)
     $('#edit-description').val(description)
     $('#edit-status').val(status)
@@ -164,7 +216,8 @@ function addTodo() {
         data: {
             name: $('#add-name').val(),
             description: $('#add-description').val(),
-            dueDate: $('#add-date').val()
+            dueDate: $('#add-date').val(),
+            sendEmail: $("input[name='sendEmail']:checked").val()
         }
     })
         .done(response => {
@@ -172,12 +225,18 @@ function addTodo() {
             myTodo()
         })
         .fail((jqXHR, textStatus) => {
-            $('#wrongInput').text(jqXHR.responseJSON.errors.name.message).show()
+            console.log(jqXHR);
+            
+            $('#notification').text(jqXHR.responseJSON.errors.dueDate.message).show()
         })
 
 }
 
 function editTodo(todoToEdit) {
+    console.log($('#edit-name').val())
+    console.log($('#edit-description').val())
+    console.log($('#edit-status').val())
+    console.log($('#edit-dueDate').val())
     $.ajax({
         url: `http://localhost:3000/todo/${todoToEdit}`,
         method: "PATCH",
@@ -192,22 +251,29 @@ function editTodo(todoToEdit) {
         }
     })
         .done(response => {
+            console.log(`edit berhasil`);
+            
             console.log(response);
 
         })
         .fail((jqXHR, textStatus) => {
-            console.log(jqXHR.responseJSON.msg);
+            $('#notification').text(jqXHR.responseJSON).show()
         })
 }
 
 $(document).ready(() => {
+
     $('#addFormContainer').hide()
     $('#editFormContainer').hide()
-    $('#wrongInput').hide()
+    $('#notification').hide()
     if (localStorage.token) {
+        $('#loginRegisterForm').hide()
         $('#googleSignIn').hide()
         $('#googleSignOut').show()
     } else if (!localStorage.token) {
+        $('#loginRegisterForm').show()
+        $('#myTodos').hide()
+        $('#addTodo').hide()
         $('#googleSignIn').show()
         $('#googleSignOut').hide()
     }
@@ -217,18 +283,18 @@ $(document).ready(() => {
     })
     $('#registerForm').on('submit', event => {
         event.preventDefault()
-        $('#wrongInput').hide()
+        $('#notification').hide()
         register()
     })
     $('#addForm').on('submit', event => {
         event.preventDefault()
-        $('#wrongInput').hide()
+        $('#notification').hide()
 
         addTodo()
     })
     $('#editForm').on('submit', event => {
         event.preventDefault()
-        $('#wrongInput').hide()
+        $('#notification').hide()
 
         editTodo(todoToEdit)
         $('#editFormContainer').hide()
@@ -236,14 +302,14 @@ $(document).ready(() => {
     })
     $('#myTodos').on('click', event => {
         myTodo()
-        $('#wrongInput').hide()
+        $('#notification').hide()
 
         $('#editFormContainer').hide()
         $('#addFormContainer').hide()
         $('#loginRegisterForm').hide()
     })
     $('#addTodo').on('click', event => {
-        $('#wrongInput').hide()
+        $('#notification').hide()
 
         $('#addFormContainer').show()
         $('#table').hide()
