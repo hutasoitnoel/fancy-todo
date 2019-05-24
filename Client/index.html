@@ -56,15 +56,16 @@
                     <a id="addTodo" class="nav-link" href="#">Add Todo<span class="sr-only">(current)</span></a>
                 </li>
                 <li style="position: absolute; right: 20px;">
-                    <a id="googleSignOut" href="#" onclick="signOut();">Sign out</a>
+                    <a style="text-decoration: none; color: black !important; " id="googleSignOut" href="#" onclick="signOut();">Sign out</a>
                 </li>
             </ul>
         </div>
     </nav>
 
     <div class="alert alert-danger" id="notification"></div>
-    
-    <div style="margin-top:2em" id="addFormContainer" class="container" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+
+    <div style="margin-top:2em" id="addFormContainer" class="container"
+        class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Add Todo</div>
@@ -167,11 +168,15 @@
             </tbody>
         </table>
     </div>
-    <div id="loginRegisterForm" class="container" style="border: 1px solid #616161; border-radius: 1em; max-width: 750px;">
-        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-12 col-md-offset-3 col-sm-8 col-sm-offset-2" >
-            <div class="panel panel-info" >
+    <div id="loginRegisterForm" class="container"
+        style="border: 1px solid #616161; border-radius: 1em; max-width: 750px;">
+        <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-12 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info">
                 <div class="panel-heading">
-                    <div style="background-color: #99EADF;border-radius: 2em;max-width: 109px;text-align: center;" class="panel-title"><h3>Sign In</h3></div>
+                    <div style="background-color: #99EADF;border-radius: 2em;max-width: 109px;text-align: center;"
+                        class="panel-title">
+                        <h3>Sign In</h3>
+                    </div>
                     <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
                 </div>
                 <div style="padding-top:30px" class="panel-body">
@@ -213,7 +218,10 @@
             class="mainbox col-md-12 col-md-offset-3 col-sm-8 col-sm-offset-2">
             <div class="panel panel-info">
                 <div class="panel-heading">
-                    <div style="background-color: #99EADF;border-radius: 2em;max-width: 125px;text-align: center;" class="panel-title"><h3>Register</h3></div><br>
+                    <div style="background-color: #99EADF;border-radius: 2em;max-width: 125px;text-align: center;"
+                        class="panel-title">
+                        <h3>Register</h3>
+                    </div><br>
                     <div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#"></a></div>
                 </div>
                 <div class="panel-body">
@@ -264,11 +272,12 @@
         </div>
     </div><br>
 
-    <footer class="text-center">
+    <footer id="inspireMe" class="text-center">
         <div style="background-color: #EA99A4;max-width: 500px;margin: 0 auto;border-radius: 2em;padding: 0.5em;">
             <h6 id="quoteText" style="font-style: italic"></h6>
             <h6 id="quoteAuthor" style="font-style: italic"></h6>
-            <button id="generateQuoteButton" style="background-color: #99EADF" class="btn" type="submit">Inspire me!</button>
+            <button id="generateQuoteButton" style="background-color: #99EADF" class="btn" type="submit">Inspire
+                me!</button>
         </div>
     </footer>
 

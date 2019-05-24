@@ -17,7 +17,6 @@ function onSignIn(googleUser) {
             localStorage.setItem('token', response.token)
         })
         .fail((jqXHR, textStatus) => {
-            $('#notification').text(jqXHR.responseJSON.msg).show();
             console.log(`error google sign in`);
         })
     $('#googleSignIn').hide()
@@ -46,6 +45,8 @@ function signIn() {
                 $('#loginRegisterForm').hide()
                 $('#myTodos').show()
                 $('#addTodo').show()
+                $('#inspireMe').show()
+                myTodo()
             }
         })
         .fail((jqXHR, textStatus) => {
@@ -90,6 +91,7 @@ function signOut() {
     $('#addFormContainer').hide()
     $('#myTodos').hide()
     $('#addTodo').hide()
+    $('#inspireMe').hide()
 }
 
 function myTodo() {
@@ -211,6 +213,10 @@ function addTodo() {
     })
         .done(response => {
             $('#addFormContainer').hide()
+            $('#add-name').val("")
+            $('#add-description').val("")
+            $('#add-date').val("")
+            $("input[name='sendEmail']:checked").val("")
             myTodo()
         })
         .fail((jqXHR, textStatus) => {
@@ -265,6 +271,7 @@ $(document).ready(() => {
         $('#googleSignIn').hide()
         $('#googleSignOut').show()
     } else if (!localStorage.token) {
+        $('#inspireMe').hide()
         $('#loginRegisterForm').show()
         $('#myTodos').hide()
         $('#addTodo').hide()

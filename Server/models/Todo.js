@@ -2,8 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 let validDate = function (date) {
-    if (date >= new Date()) return true
-    else return false
+    if (new Date(date) > new Date() || String(new Date(date)).slice(0,10) == String(new Date()).slice(0,10)) return true
+    else {
+        return false
+    }
 }
 
 let todoSchema = new Schema({

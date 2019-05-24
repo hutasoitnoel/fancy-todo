@@ -71,8 +71,6 @@ class TodoController {
                 name, description, status, dueDate
             }, { new: true })
             .then(updated => {
-                console.log(updated);
-
                 res.status(200).json(updated)
             })
             .catch(err => {
@@ -84,9 +82,6 @@ class TodoController {
         Todo
             .findOneAndDelete({ _id: req.params.id })
             .then(deleted => {
-                console.log(deleted);
-                console.log('lala!');
-
                 res.status(200).json(deleted)
             })
             .catch(err => {
